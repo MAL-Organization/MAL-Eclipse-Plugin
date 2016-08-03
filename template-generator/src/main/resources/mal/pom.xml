@@ -1,0 +1,154 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>groupid</groupId>
+	<artifactId>artifactid</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>name</name>
+	<description>description</description>
+
+	<properties>
+		<mcu.model>STM32F072CB</mcu.model>
+		<!-- MAL properties -->
+		<mal.library.version>1.0.7</mal.library.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.4</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.3</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.2</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.3</version>
+			</plugin>
+
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>download-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<executions>
+					<execution>
+						<id>install-jbpm</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://github.com/MAL-Organization/MAL/releases/download/mal-${mal.library.version}/mal-${mal.library.version}-library.zip</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.build.directory}/mal</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.7</version>
+				<executions>
+					<execution>
+						<id>copy-lib</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/libs/</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.build.directory}/mal/${mcu.model}/${optimisation.level}</directory>
+									<filtering>false</filtering>
+									<includes>
+										<include>libmal.a</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-headers</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/mal/headers</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.build.directory}/mal/${mcu.model}/headers</directory>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>build</id>
+						<phase>compile</phase>
+						<configuration>
+							<target>
+								<echoproperties destfile="${project.build.directory}/initialize.properties" />
+								<exec failifexecutionfails="true" executable="powershell" failonerror="true">
+									<arg value="${project.build.directory}\..\build-scripts\compile.ps1" />
+									<arg value="${path.to.eclipse}" />
+									<arg value="${path.to.workspace}" />
+									<arg value="${build.config}" />
+									<arg value="${basedir}" />
+									<arg value="${optimisation.level}" />
+								</exec>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.10</version>
+				<executions>
+				  <execution>
+					<id>attach-artifacts</id>
+					<phase>package</phase>
+					<goals>
+					  <goal>attach-artifact</goal>
+					</goals>
+					<configuration>
+					  <artifacts>
+						<artifact>
+						  <file>${project.build.directory}\artifacts\Debug\base-board.elf</file>
+						  <type>elf</type>
+						</artifact>
+						<artifact>
+						  <file>${project.build.directory}\artifacts\Debug\base-board.hex</file>
+						  <type>hex</type>
+						</artifact>
+					  </artifacts>
+					</configuration>
+				  </execution>
+				</executions>  
+			</plugin>
+		</plugins>
+	</build>
+</project>

@@ -1,7 +1,7 @@
-/**
- * @author Olivier Allaire
- * @copyright Copyright (c) 2015 Olivier Allaire
- * @par This file is part of MAL.
+/*
+ * Copyright (c) 2015 Olivier Allaire
+ *
+ * This file is part of MAL.
  *
  * MAL is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,16 +16,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with MAL.  If not, see <http://www.gnu.org/licenses/>.
  */
-package mal.eclipseplugin.mcu.mcus.st.stm32f0;
+#include "hspec/mal_hspec_cmn.h"
 
-public class Stm32f072cb extends Stm32f0 {
+const mal_hspec_system_clk_s mal_target_system_clock = {
+		.frequency = MAL_TARGET_SYSTEM_CLOCK,
+		.src = MAL_TARGET_SYSTEM_CLOCK_SRC
+};
 
-	public String getLabel() {
-		return getValue();
-	}
+uint64_t mal_external_clk_freq = MAL_EXTERNAL_CLOCK_FREQUENCY;
 
-	public String getValue() {
-		return "STM32F072CB";
-	}
-
-}
+float mal_external_vdda = 3.3f;

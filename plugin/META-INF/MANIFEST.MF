@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MAL CDT Templates
+Bundle-SymbolicName: mal-eclipse-plugin;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Vendor: TBD
+Require-Bundle: org.eclipse.cdt.core;bundle-version="5.9.1"

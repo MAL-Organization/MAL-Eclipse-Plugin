@@ -18,6 +18,11 @@
  */
 package mal.eclipseplugin.mcu;
 
+import java.io.File;
+import java.util.List;
+
+import mal.eclipseplugin.template.TemplateSourceFile;
+
 public interface Mcu {
 	
 	public String getLabel();
@@ -25,5 +30,27 @@ public interface Mcu {
 	public String getValue();
 	
 	public McuFamily getFamily();
+	
+	public List<String> getSymbols();
+	
+	public List<String> getIncludePaths();
+	
+	public List<File> getLinkerScripts();
+	
+	/**
+	 * @return A list of libraries to link but do not have a library to be
+	 * copied into the project. Usually, these libraries come with the
+	 * toolchain.
+	 */
+	public List<String> getInstalledLibraries();
+	
+	/**
+	 * @return A list of libraries to link and copy into the project.
+	 */
+	public List<File> getLibraries();
+	
+	public List<String> getSourceFolders();
+	
+	public List<TemplateSourceFile> getSourceFiles();
 
 }

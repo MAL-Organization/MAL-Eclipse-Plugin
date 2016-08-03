@@ -16,16 +16,27 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with MAL.  If not, see <http://www.gnu.org/licenses/>.
  */
-package mal.eclipseplugin.mcu.mcus.st.stm32f0;
+package mal.eclipseplugin.template;
 
-public class Stm32f072rb extends Stm32f0 {
-
-	public String getLabel() {
-		return getValue();
+public enum EclipseOptionType {
+	
+	STRING("org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue"),
+	STRING_LIST("org.eclipse.cdt.managedbuilder.core.SetMBSStringListOptionValues"),
+	BOOLEAN("org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue"),
+	APPEND_STRING("org.eclipse.cdt.managedbuilder.core.AppendToMBSStringOptionValue"),
+	APPEND_STRING_LIST("org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues"),
+	CREATE_SOURCE_FOLDER("org.eclipse.cdt.core.CreateSourceFolder"),
+	ADD_FILES("org.eclipse.cdt.core.AddFiles");
+	
+	
+	private final String type;
+	
+	private EclipseOptionType(String type) {
+		this.type = type;
 	}
-
-	public String getValue() {
-		return "STM32F072RB";
+	
+	public String getType() {
+		return type;
 	}
 
 }

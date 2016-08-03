@@ -5,7 +5,8 @@ public enum MalProperty {
 	MCU("mcuProperty"),
 	SYSTEM_CLOCK("sysClkProperty"),
 	SYSTEM_CLOCK_SOURCE("sysClkSrcProperty"),
-	EXTERNAL_CLOCK("extClkProperty");
+	EXTERNAL_CLOCK("extClkProperty"),
+	VERSION("malVersion");
 	
 	private final String id;
 	
